@@ -84,9 +84,13 @@
 
 #if defined(TILES)
 #   include <SDL.h>
+//#   include "../bin/x64/SDL2.dll"
 #   include <SDL_ttf.h>
+//#   include "../bin/x64/SDL2_ttf.dll"
 #   include <SDL_image.h>
+//#   include "../bin/x64/SDL2_image.dll"
 #   if defined(SDL_SOUND)
 #       include <SDL_mixer.h>
+//#   include "../bin/x64/SDL2_mixer.dll"
 #   endif
 #endif

@@ -92,6 +92,8 @@
     <LinkIncremental>false</LinkIncremental>
     <OutDir>$(SolutionDir)\..\</OutDir>
     <TargetName>Cataclysm</TargetName>
+    <ReferencePath>$(ReferencePath)</ReferencePath>
+    <IncludePath>E:\Github\Cataclysm-DDA\bin\x64;$(IncludePath)</IncludePath>
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <ClCompile>
