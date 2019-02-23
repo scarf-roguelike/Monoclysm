@@ -53,6 +53,7 @@ static const char *tag = "cdda";
 
 static void *thread_func( void * )
 {
+
     ssize_t rdsz;
     char buf[128];
     for( ;; ) {
