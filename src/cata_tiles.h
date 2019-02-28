@@ -34,7 +34,7 @@ struct tile_type {
     bool multitile = false;
     bool rotates = false;
     int height_3d = 0;
-    point offset = {0, 0};
+    point offset = { 0, 0 };
 
     std::vector<std::string> available_subtiles;
 };
@@ -65,6 +65,7 @@ enum TILE_CATEGORY {
     C_BULLET,
     C_HIT_ENTITY,
     C_WEATHER,
+    C_FILTER,
 };
 
 /** Typedefs */
@@ -81,6 +82,7 @@ class texture
         SDL_Rect srcrect = { 0, 0, 0, 0 };
 
     public:
+
         texture( std::shared_ptr<SDL_Texture> ptr, const SDL_Rect rect ) : sdl_texture_ptr( ptr ),
             srcrect( rect ) { }
         texture() = default;
@@ -95,6 +97,22 @@ class texture
         int render_copy_ex( SDL_Renderer *const renderer, const SDL_Rect *const dstrect, const double angle,
                             const SDL_Point *const center, const SDL_RendererFlip flip ) const {
             return SDL_RenderCopyEx( renderer, sdl_texture_ptr.get(), &srcrect, dstrect, angle, center, flip );
+        }
+
+        int render_copy( SDL_Renderer *const renderer, const SDL_Rect *const dstrect ) const {
+            return SDL_RenderCopy( renderer, sdl_texture_ptr.get(), &srcrect, dstrect );
+        }
+
+        void set_blendtexture( SDL_BlendMode sb )const {
+            SDL_SetTextureBlendMode( sdl_texture_ptr.get(), sb );
+        }
+
+        void set_colormode( int r, int g, int b )const {
+            SDL_SetTextureColorMod( sdl_texture_ptr.get(), r, g, b );
+        }
+
+        void set_alphamode( int alpha )const {
+            SDL_SetTextureAlphaMod( sdl_texture_ptr.get(), alpha );
         }
 };
 
@@ -284,6 +302,8 @@ class tileset
 
         tile_type &create_tile_type( const std::string &id, tile_type &&new_tile_type );
         const tile_type *find_tile_type( const std::string &id ) const;
+
+        bool contain_tile_type( const std::string &id ) const;
 };
 
 class tileset_loader
@@ -425,6 +445,7 @@ class cata_tiles
         bool draw_critter_at( const tripoint &p, lit_level ll, int &height_3d );
         bool draw_entity( const Creature &critter, const tripoint &p, lit_level ll, int &height_3d );
         void draw_entity_with_overlays( const player &pl, const tripoint &p, lit_level ll, int &height_3d );
+        bool draw_filter( const tripoint &p, lit_level ll, int &height_3d );
 
         bool draw_item_highlight( const tripoint &pos );
 
@@ -486,6 +507,8 @@ class cata_tiles
         void reinit();
 
         void reinit_minimap();
+
+        bool init_filter();
 
         int get_tile_height() const {
             return tile_height;
