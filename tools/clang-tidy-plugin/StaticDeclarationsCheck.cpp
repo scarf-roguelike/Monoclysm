@@ -53,11 +53,13 @@ static void CheckDecl( StaticDeclarationsCheck &Check,
     if( isInHeader( ThisDecl->getBeginLoc(), SM ) ) {
         if( IsStatic ) {
             if( IsConst ) {
+                const SourceLocation StaticLoc = ThisDecl->getBeginLoc();
+                const SourceLocation StaticLocEnd = StaticLoc.getLocWithOffset( 6 );
                 Check.diag(
                     ThisDecl->getBeginLoc(),
                     "Declaration %0 should not be declared static in a header.  It is const, so "
                     "implicitly has internal linkage and the static keyword can be removed."
-                ) << ThisDecl;
+                ) << ThisDecl << FixItHint::CreateRemoval( SourceRange( StaticLoc, StaticLocEnd ) );
             } else {
                 Check.diag(
                     ThisDecl->getBeginLoc(),
